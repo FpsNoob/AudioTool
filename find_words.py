@@ -27,6 +27,9 @@ def find_word(folder_path, word_list):
         txt_file.close()
     return need_to_save
 
+def copy_file():
+    ''' copy wav file to the folder we set, using the path in the label file
+    '''
 
 if __name__ == '__main__':
     word_list = get_words(r'words.txt')
