@@ -1,7 +1,14 @@
 import os
 import re
 import shutil
+import csv
 from tensorflow.python.platform import gfile
+
+def load_csv(filepath):
+    with open(filepath, 'r') as f:
+        reader = csv.reader(f)
+    return reader
+
 
 def get_words(filepath):
     word_list = []
@@ -26,14 +33,17 @@ def find_word(folder_path, wanted_word_list):
     detail = []
     flag = 0
     cnt = 0
-    search_path = os.path.join(folder_path, '*txt')
+    search_path = os.path.join(folder_path, '*', '*.csv')
     for txt_path in gfile.Glob(search_path):
-        txt_file = open(txt_path)
+        txt_file = load_csv(txt_path)
+        #txt_file = open(txt_path)
         for txt in txt_file:
-            filename, sentence = re.split('\t', txt, 1)
-            sentence = sentence.replace('\n', '').replace('\r', '')
+            filename = txt[1]
+            sentence = txt[2]
+            # filename, sentence = re.split('\t', txt, 1)
+            # sentence = sentence.replace('\n', '').replace('\r', '')
             words = re.split(' ', sentence)
-            filename = os.path.basename(txt_path).replace('.wav.trn', '')
+            #filename = os.path.basename(txt_path).replace('.wav.trn', '')
             for word in words:
                 if flag:
                     flag = 0
@@ -78,12 +88,15 @@ def word_count(filepath, wanted_word_list_):
     for wanted_word in wanted_word_list_:
         word_list[wanted_word.lower()] = 0
     print(word_list)
-    search_path = os.path.join(filepath, '*', '*.wav.trn')
+    search_path = os.path.join(filepath, '*', '*.csv')
     for path in gfile.Glob(search_path):
-        txt_file = open(path)
+        #txt_file = open(path)
+        txt_file = load_csv(path)
         for txt in txt_file:
-            filename, sentence = re.split(' ', txt, 1)
-            sentence = sentence.replace('\n', '').replace('\r', '')
+            filename = txt[1]
+            sentence = txt[2]
+            # filename, sentence = re.split(' ', txt, 1)
+            # sentence = sentence.replace('\n', '').replace('\r', '')
             words = re.split(' ', sentence)
             for word in words:
                 for wanted_word in wanted_word_list_:
@@ -99,13 +112,13 @@ def word_count(filepath, wanted_word_list_):
 
 
 if __name__ == '__main__':
-    load_path = r'D:\chrome'
-    save_path = r'D:\chrome'
+    load_path = r'D:\chrome\Crowdsourced high-quality UK and Ireland English Dialect speech data set'
+    save_path = r'D:\words_count\temp_16'
     if not os.path.exists(save_path):
         os.mkdir(save_path)
-    word_list = get_words(r'test_words')
+    word_list = get_words(r'words.txt')
     for word in word_list:
         print(word)
-    #path, file_name, detail = find_word(load_path, word_list)
-    # copy_file(path, file_name, detail, save_path)
-    word_count(load_path, word_list)
+    path, file_name, detail = find_word(load_path, word_list)
+    copy_file(path, file_name, detail, save_path)
+    #word_count(load_path, word_list)
