@@ -18,6 +18,11 @@ def get_wav_make(wavfile, begin, end, filename):
     cut_wav.export(save_path+'\\'+name+filename+'.wav', format='wav')    # save new wavfile
     print("clip %s: %d to %d" % (filename, begin, end))
 
+def get_mp3_make(mp3, begin, end, filename):
+    '''
+    find the point to clip the word in the mp3 audio
+    '''
+
 def trans(minute, second, ms, value):
     result = int(ms) + int(second) * 1000 + int(minute) * 60000
     result += value
