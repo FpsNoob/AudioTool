@@ -15,7 +15,7 @@ def get_wavfile(file_path):
     #转化成numpy数组形式
     return wavfile
 
-def get_energy_zcr(wavfile, frame_length):
+def get_energy_zcr(wavfile, frame_length): #计算一段音频的短时能量和过零率
     # 计算帧数
     wavfile = wavfile.get_array_of_samples()
     frame_number = round(len(wavfile)/frame_length)
@@ -39,7 +39,7 @@ def get_audiopart(energy, zcr, E_avg, t3):
     is_audio =0
     silence_len = 0
     D = C = len(energy)
-    for i in range(len(energy)):
+    for i in range(len(energy)):  # 利用短时能量，找出语音段的大致范围
         if energy[i] > E_avg and C > i:#语音开始
             is_audio = 1
             C = i
@@ -56,7 +56,7 @@ def get_audiopart(energy, zcr, E_avg, t3):
     A = C
     B = D
     mid = (D+C)/2
-    for i in range(C, -1, -1):
+    for i in range(C, -1, -1):  # 通过过零率，扩大语音段的范围
         if zcr[i] > t3:
             A = i
     for i in range(D, len(zcr)):

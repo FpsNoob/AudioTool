@@ -9,12 +9,12 @@ def trans_audiofile(file_path, file_format, new_format):
     for path in gfile.Glob(search_path):
         cnt += 1
         save_path = path.replace(file_format, new_format)
-        cmd = 'ffmpeg -i ' + path + ' ' + save_path
+        cmd = 'ffmpeg -i ' + path + ' ' + save_path  # 用ffmpeg装换音频格式
         print(cmd)
         os.system(cmd)
     print('totally trans %d files' % cnt)
 
-def file_remove(path, file_format):
+def file_remove(file_path, file_format):  # 将文件夹下所有file_format格式文件删除
     search_path = os.path.join(file_path, '*', '*' + file_format)
     cnt = 0
     for path in gfile.Glob(search_path):

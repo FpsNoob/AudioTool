@@ -3,7 +3,7 @@ import re
 import shutil
 from tensorflow.python.platform import gfile
 
-def load_csv(filepath):
+def load_csv(filepath):   #加载csv文件，返回文件名和label
     filename = []
     detail = []
     file = open(filepath, 'r', encoding="utf-8")  # 读取以utf-8
@@ -22,7 +22,7 @@ def load_csv(filepath):
 
 
 
-def get_words(filepath):
+def get_words(filepath):  #加载wanted_words
     word_list = []
     file = open(filepath)
     for word in file:
@@ -47,7 +47,7 @@ def find_word(folder_path, wanted_word_list):
     cnt = 0
     search_path = os.path.join(folder_path, '*', '*.csv')
     for txt_path in gfile.Glob(search_path):
-        #txt_file = open(txt_path)
+        #txt_file = open(txt_path)  #根据不同数据集保存的文本信息，切割方面会有改动
         x, y = load_csv(txt_path)
         file_len = len(x)
         #for txt in txt_file:
@@ -56,7 +56,7 @@ def find_word(folder_path, wanted_word_list):
             # sentence = sentence.replace('\n', '').replace('\r', '')
             filename = x[i]
             sentence = y[i]
-            words = re.split(' ', sentence)
+            words = re.split(' ', sentence)  #切分出label里的单词，与wanted_words进行匹配
             #filename = os.path.basename(txt_path).replace('.wav.trn', '')
             for word in words:
                 if flag:
@@ -75,14 +75,15 @@ def find_word(folder_path, wanted_word_list):
                         flag = 1
                         break
         #txt_file.close()
-    return path, file_name, detail
+    return path, file_name, detail  #单个文件路径、文件名和文本信息
 
-def copy_file(path, file_name, detail, save_path):
+def copy_file(path, file_name, detail, save_path):   # 将包含wanted_words的数据copy到新文件夹中
     file = open(save_path + '\index.txt', 'a')
     print(save_path)
     path_len = len(path)
     # copy file
     cnt = 0
+    # 将文件名和文本信息保存到index.txt中
     for i in range(path_len):
         temp_name = file_name[i] + '.wav'
         loadpath = os.path.dirname(path[i])
@@ -97,7 +98,7 @@ def copy_file(path, file_name, detail, save_path):
     print('total copy file %d' % cnt)
     file.close()
 
-def word_count(filepath, wanted_word_list_):
+def word_count(filepath, wanted_word_list_): # 统计词汇量函数，与find_word函数类似
     word_list = {}
     for wanted_word in wanted_word_list_:
         word_list[wanted_word.lower()] = 0

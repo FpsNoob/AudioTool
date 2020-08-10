@@ -13,17 +13,13 @@ value = find_error.get_value() #设备之间的偏差
 word_index = 0
 cnt = 1
 
-def get_wav_make(wavfile, begin, end, filename):
+def get_wav_make(wavfile, begin, end, filename):  # 剪切、保存音频
     cut_wav = wavfile[begin:end]
     cut_wav.export(save_path+'\\'+name+filename+'.wav', format='wav')    # save new wavfile
     print("clip %s: %d to %d" % (filename, begin, end))
 
-def get_mp3_make(mp3, begin, end, filename):
-    '''
-    find the point to clip the word in the mp3 audio
-    '''
 
-def trans(minute, second, ms, value):
+def trans(minute, second, ms, value):  # 转换音频时长格式
     result = int(ms) + int(second) * 1000 + int(minute) * 60000
     result += value
     return result

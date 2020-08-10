@@ -5,6 +5,8 @@ save_path=r'D:\7.21\czw.txt'
 time = 500*16#600*16 # 1s
 rate = 16000
 
+# 切割一段音频
+
 def trans(time):
     time = time // 16
     minute = time//60000
